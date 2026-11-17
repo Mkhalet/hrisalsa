@@ -89,14 +89,14 @@ html.chili #chili{display:block}
 .stage .vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.45));pointer-events:none}
 /* palette piano */
 .pal{position:relative;aspect-ratio:16/9;border-radius:14px;margin-bottom:6vh;overflow:hidden;background:var(--cream);box-shadow:0 24px 60px rgba(42,23,20,.14);display:flex;user-select:none}
-.key{position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 1.4vw 4.5%;transform:translateY(-102%);transition:transform .9s cubic-bezier(.34,1.56,.64,1),filter .15s;cursor:pointer;border-right:1px solid rgba(0,0,0,.06);box-shadow:inset 0 -14px 0 rgba(0,0,0,.08)}
+.key{position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 1.4vw 4.5%;transform:translateY(-102%);transition:transform .45s cubic-bezier(.3,1.45,.6,1),filter .15s;cursor:pointer;border-right:1px solid rgba(0,0,0,.06);box-shadow:inset 0 -14px 0 rgba(0,0,0,.08)}
 .pal.in .key{transform:none}
 .key.down{transform:translateY(1.6%)!important;filter:brightness(.9);box-shadow:inset 0 -4px 0 rgba(0,0,0,.12),inset 0 10px 24px rgba(0,0,0,.18);transition:transform .08s,filter .08s}
 .key b{font-family:Marcellus;font-weight:400;font-size:clamp(14px,2.3vw,44px);line-height:1}
 .key i{font-style:normal;font-family:'DM Mono',monospace;font-size:clamp(8px,.7vw,13px);letter-spacing:.12em;margin-top:.6em;opacity:.8}
 .key span{font-size:clamp(8px,.8vw,15px);line-height:1.45;margin-top:.9em;opacity:.9}
 .key .note{font-style:normal;position:absolute;top:4%;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:clamp(9px,.8vw,13px);opacity:.45}
-.pal .ttl{position:absolute;left:4%;top:9%;z-index:3;background:var(--cream);border-radius:20px;padding:2.2% 2.6%;box-shadow:0 20px 50px rgba(0,0,0,.18);opacity:0;transform:translateY(-20px);transition:all .8s var(--out) 1s;pointer-events:none}
+.pal .ttl{position:absolute;left:4%;top:9%;z-index:3;background:var(--cream);border-radius:20px;padding:2.2% 2.6%;box-shadow:0 20px 50px rgba(0,0,0,.18);opacity:0;transform:translateY(-20px);transition:all .6s var(--out) .6s;pointer-events:none}
 .pal.in .ttl{opacity:1;transform:none}
 .pal .ttl small{display:block;font-family:'DM Mono',monospace;font-size:clamp(9px,.8vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
 .pal .ttl div{font-family:Marcellus;font-size:clamp(22px,4.2vw,80px);line-height:1;margin-top:.25em}
@@ -202,12 +202,12 @@ addEventListener('scroll',walkFrame,{passive:true});addEventListener('resize',wa
 function buildPal(){const k=[['#B6261E','#F6ECD9','Harissa','La sauce. La couleur qui signe tout.','Do',261.63],['#F6ECD9','#2A1714','Semoule','Le couscous, le papier, la chaux.','Ré',293.66],['#F2B53A','#2A1714','Safran','Les gouttes de lumière.','Mi',329.63],['#4E8A2E','#F6ECD9','Felfel','La queue du piment, les herbes.','Fa',349.23],['#1E3F9A','#fff','Zellige','Les carreaux, les portes de Sidi Bou Saïd.','Sol',392],['#8FB3E8','#2A1714','Ciel','La fraîcheur du motif bleu.','La',440],['#2A1714','#F6ECD9','Encre','Les textes, le menu, la nuit.','Si',493.88]];
   const p=document.createElement('div');p.className='pal';
   p.innerHTML='<div class="ttl"><small>Temps 5 · Le langage</small><div>La palette<br>en sept pas.</div><p>Passe sur les touches</p></div>'+
-    k.map(([bg,fg,n,t,no,f],i)=>`<div class="key" data-f="${f}" style="background:${bg};color:${fg};transition-delay:${i*.11}s"><em class="note">${no}</em><b>${n}</b><i>${bg.toUpperCase()}</i><span>${t}</span></div>`).join('');
+    k.map(([bg,fg,n,t,no,f],i)=>`<div class="key" data-f="${f}" style="background:${bg};color:${fg};transition-delay:${i*.07}s"><b>${n}</b><i>${bg.toUpperCase()}</i><span>${t}</span></div>`).join('');
   const keys=[...p.querySelectorAll('.key')];
   const hit=key=>{if(!key)return;key.classList.add('down');setTimeout(()=>key.classList.remove('down'),180)};
   keys.forEach(key=>{key.addEventListener('pointerdown',e=>{e.preventDefault();hit(key)});key.addEventListener('mouseenter',()=>hit(key))});
   let swept=false;
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){p.classList.add('in');setTimeout(()=>keys.forEach(x=>x.style.transitionDelay='0s'),1600);io.disconnect()}}),{threshold:.3});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){p.classList.add('in');setTimeout(()=>keys.forEach(x=>x.style.transitionDelay='0s'),1000);io.disconnect()}}),{threshold:.6});
   io.observe(p);return p}
 /* dishes carousel */
 function buildCar(){const d=[['couscous','Couscous Cha-Cha','1·2·cha-cha-cha · 28 DT'],['ojja','Ojja Mambo','Tempo vif · 22 DT'],['ma9rouna','Ma9rouna Rueda','En cercle · 24 DT']];
