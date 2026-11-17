@@ -76,6 +76,8 @@ html.chili #chili{display:block}
 .puff.warm{background:radial-gradient(circle,rgba(242,181,58,.7),rgba(242,181,58,0) 70%)}
 @keyframes puff{to{transform:translate(var(--dx),-46px) scale(3.2);opacity:0}}
 
+.fr.mob{opacity:0;transform:translateY(36px) scale(.96);transition:opacity .6s ease,transform .8s var(--out)}
+.fr.mob.in{opacity:1;transform:none}
 /* walk into the restaurant */
 .walk{position:relative;height:340vh;margin-bottom:6vh}
 .stage{position:sticky;top:0;height:100vh;overflow:hidden;border-radius:14px;background:#1a0b08;box-shadow:0 30px 80px rgba(42,23,20,.16);perspective:1400px}
@@ -130,7 +132,7 @@ footer p{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.14em;tex
 .btn.a{background:var(--cream);color:var(--red)}
 .btn.b{border:1.5px solid var(--cream);color:var(--cream)}
 @media(max-width:700px){:root{--nav:42px}nav{gap:8px;padding:0 10px}nav .brand{font-size:15px}nav .brand img{width:20px;height:20px}nav a.beat span{display:none}nav a.beat{padding:4px}nav a.beat b{width:18px;height:18px;font-size:10px}#big{font-size:38px;height:38px}
-  main{padding:1vh 4px 0}.fr,.car,.walk{margin-bottom:2vh}.fr,.car,.stage{border-radius:8px}.fr.anim.in,.fr.anim.l.in,.fr.anim.r.in{clip-path:inset(0 round 8px)}#flash div{font-size:18px;padding:10px 16px}}
+  main{padding:1vh 4px 0}.fr,.car,.walk{margin-bottom:2vh}.walk{height:230vh}.stage{height:auto;aspect-ratio:16/9;top:calc(50vh - 28vw)}.stage .cap{font-size:20px;left:4%;bottom:7%}.stage .cap small{font-size:9px;margin-bottom:6px}.stage .hint{font-size:8px}.fr,.car,.stage{border-radius:8px}.fr.anim.in,.fr.anim.l.in,.fr.anim.r.in{clip-path:inset(0 round 8px)}#flash div{font-size:18px;padding:10px 16px}}
 @media(max-height:520px) and (orientation:landscape){:root{--nav:34px}nav a.beat span{display:none}nav a.beat{padding:3px}nav a.beat b{width:18px;height:18px;font-size:10px}nav .brand{font-size:14px}#big{display:none}
   main{padding:0 2px}.fr,.car,.walk{margin-bottom:1.5vh}.fr,.car,.stage{border-radius:6px}#flash{bottom:10px;left:10px}#flash div{font-size:16px;padding:8px 14px}}
 @media(prefers-reduced-motion:reduce){#intro{display:none}.fr.anim,.fr.anim img{clip-path:none!important;transform:none!important}#flash,.drop{display:none}}
@@ -234,6 +236,7 @@ function buildCar(){const d=[['couscous','Couscous Cha-Cha','1·2·cha-cha-cha �
 const main=document.getElementById('pages');const frames=[];
 beats.forEach(([a,b],i)=>{const s=document.createElement('section');s.id='t'+(i+1);s.dataset.i=i;
   for(let n=a;n<=b;n++){if(n===17){s.appendChild(buildCar());continue}if(n===10){s.appendChild(buildPal());continue}if(n===13){s.appendChild(buildWalk());continue}if(n===14)continue;const f=document.createElement('div');f.className='fr';
+    if(n>1&&!RM&&SMALL)f.classList.add('mob');
     if(n>1&&!RM&&!SMALL){f.classList.add('anim');if(n%3===1)f.classList.add('l');else if(n%3===2)f.classList.add('r')}
     const im=new Image();im.src='p'+String(n).padStart(2,'0')+'.jpg?v=4';im.alt=alts[n];if(n>2)im.loading='lazy';
     f.appendChild(im);s.appendChild(f);frames.push(f)}
@@ -252,7 +255,7 @@ else{let k=0;const t=setInterval(()=>{ticks.forEach(x=>x.classList.remove('on'))
 /* reveal on scroll */
 const rev=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting||e.boundingClientRect.top<0){e.target.classList.add('in');rev.unobserve(e.target)}}),{threshold:[0,.04]});
 addEventListener('scroll',()=>{for(const f of frames)if(!f.classList.contains('in')&&f.getBoundingClientRect().top<innerHeight*.96)f.classList.add('in')},{passive:true});
-frames.forEach(f=>f.classList.contains('anim')&&rev.observe(f));
+frames.forEach(f=>(f.classList.contains('anim')||f.classList.contains('mob'))&&rev.observe(f));
 
 /* parallax + progress */
 const bar=document.getElementById('bar');
