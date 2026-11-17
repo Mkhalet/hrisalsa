@@ -44,24 +44,23 @@ nav a.beat.on b{background:var(--saf);border-color:var(--saf);color:var(--ink);t
 #bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--saf);transform-origin:left;transform:scaleX(0)}
 
 /* ---------- pages ---------- */
-main{max-width:1920px;margin:0 auto}
+main{max-width:1760px;margin:0 auto;padding:7vh 3vw 2vh}
 section{scroll-margin-top:64px}
-.fr{position:relative;overflow:hidden;aspect-ratio:16/9;background:#e9dcc4}
+.fr{position:relative;overflow:hidden;aspect-ratio:16/9;background:#e9dcc4;border-radius:22px;margin-bottom:16vh;box-shadow:0 30px 80px rgba(42,23,20,.16)}
 .fr img{position:absolute;inset:0;width:100%;height:100%;display:block;will-change:transform}
 .fr.anim{clip-path:inset(18% 8% 18% 8% round 28px)}
 .fr.anim img{transform:scale(1.25)}
-.fr.anim.in{clip-path:inset(0 0 0 0 round 0);transition:clip-path 1.3s var(--ease)}
+.fr.anim.in{clip-path:inset(0 0 0 0 round 22px);transition:clip-path 1.3s var(--ease)}
 .fr.anim.in img{transition:transform 1.6s var(--out)}
-.fr.anim.l{clip-path:inset(0 100% 0 0)} .fr.anim.l.in{clip-path:inset(0 0 0 0)}
-.fr.anim.r{clip-path:inset(0 0 0 100%)} .fr.anim.r.in{clip-path:inset(0 0 0 0)}
+.fr.anim.l{clip-path:inset(0 100% 0 0)} .fr.anim.l.in{clip-path:inset(0 0 0 0 round 22px)}
+.fr.anim.r{clip-path:inset(0 0 0 100%)} .fr.anim.r.in{clip-path:inset(0 0 0 0 round 22px)}
 
 /* beat flash */
-#flash{position:fixed;left:0;right:0;top:50%;z-index:20;pointer-events:none;text-align:center;font-family:Marcellus;color:#fff;mix-blend-mode:difference;font-size:clamp(42px,9vw,150px);line-height:1;transform:translateY(-50%)}
-#flash div{opacity:0;transform:translateY(40px) skewY(4deg)}
-#flash.go div{animation:flash 1.5s var(--out) forwards}
-#flash small{display:block;font-family:'DM Mono',monospace;font-size:clamp(12px,1.3vw,18px);letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px}
-@keyframes flash{18%{opacity:1;transform:none}70%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-40px) skewY(-3deg)}}
-
+#flash{position:fixed;left:24px;bottom:28px;z-index:20;pointer-events:none}
+#flash div{background:var(--red);color:var(--cream);border-radius:18px;padding:14px 22px 16px;font-family:Marcellus;font-size:26px;line-height:1.1;box-shadow:0 16px 40px rgba(0,0,0,.25);transform:translateX(-130%);opacity:0}
+#flash.go div{animation:toast 2.4s var(--out) forwards}
+#flash small{display:block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--saf);margin-bottom:6px}
+@keyframes toast{14%{transform:none;opacity:1}78%{transform:none;opacity:1}100%{transform:translateX(-130%);opacity:0}}
 /* big counter */
 #big{position:fixed;right:22px;bottom:18px;z-index:15;font-family:Marcellus;font-size:64px;line-height:1;color:var(--saf);text-shadow:0 2px 14px rgba(0,0,0,.35);height:64px;overflow:hidden;pointer-events:none}
 #big span{display:block;transition:transform .6s var(--out)}
@@ -70,7 +69,23 @@ section{scroll-margin-top:64px}
 .drop{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--red);pointer-events:none;z-index:50;animation:drop .9s ease-out forwards}
 @keyframes drop{to{transform:translateY(26px) scale(.2);opacity:0}}
 
-footer{background:var(--red);color:var(--cream);text-align:center;padding:90px 24px 70px;overflow:hidden}
+/* dishes carousel */
+.car{position:relative;border-radius:22px;margin-bottom:16vh;background:var(--ink);color:var(--cream);padding:7vh 0 8vh;overflow:hidden;box-shadow:0 30px 80px rgba(42,23,20,.16)}
+.car h2{font-family:Marcellus;font-weight:400;font-size:clamp(34px,5vw,84px);line-height:1;padding:0 5vw}
+.car .k{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.25em;text-transform:uppercase;color:var(--saf);padding:0 5vw;margin-bottom:18px}
+.car p{padding:0 5vw;margin-top:16px;opacity:.75;max-width:640px;line-height:1.6}
+.track{display:flex;gap:28px;width:max-content;padding:70px 0 40px;animation:marq 40s linear infinite}
+.car:hover .track{animation-play-state:paused}
+@keyframes marq{to{transform:translateX(-50%)}}
+.card{width:clamp(220px,22vw,340px);flex:none;transition:transform .5s var(--out),opacity .4s;cursor:pointer}
+.card .ph{aspect-ratio:4/5;border-radius:20px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--out)}
+.card b{display:block;font-family:Marcellus;font-weight:400;font-size:24px;margin-top:16px}
+.card i{font-style:normal;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--saf)}
+.track:hover .card{opacity:.45}
+.track .card:hover,.track .card.tap{opacity:1;transform:scale(1.18);z-index:2}
+.card:hover img{transform:scale(1.08)}
+footer{background:var(--red);color:var(--cream);text-align:center;padding:50px 24px 50px;overflow:hidden}
 footer img{width:120px;height:120px;border-radius:50%;animation:spin 6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 footer h2{font-family:Marcellus;font-weight:400;font-size:clamp(30px,4vw,56px);margin-top:24px}
@@ -112,8 +127,6 @@ footer p{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.14em;tex
 <main id="pages"></main>
 
 <footer>
-  <img src="emblem.jpg" alt="">
-  <h2>Merci d'avoir dansé.</h2>
   <p>Hrisalsa · Salsa Bladi · Projet fictif · 2026</p>
   <div class="btns">
     <a class="btn a" href="Hrisalsa_case_study.pdf" download>Télécharger le PDF</a>
@@ -127,10 +140,19 @@ const beats=[[1,4],[5,5],[6,8],[9,9],[10,12],[13,15],[16,19],[20,22]];
 const names=["L'étincelle","L'univers","Le geste","Pause","Le langage","Le lieu","La table","Hors les murs"];
 const alts={1:"Couverture Hrisalsa",2:"Prologue : salsa, la sauce et la danse",3:"Le nom : Hrissa + Salsa",4:"Le brief et les valeurs",5:"Moodboard",6:"Croquis du logo",7:"L'emblème, le piment qui danse",8:"Déclinaisons du logo",9:"Pause",10:"Couleurs",11:"Typographie",12:"Motifs",13:"La façade",14:"La salle",15:"La table et le néon",16:"Les assiettes",17:"Les plats",18:"Le menu",19:"La tenue du serveur",20:"Instagram",21:"Emballages à emporter",22:"Fin"};
 
+/* dishes carousel */
+function buildCar(){const d=[['couscous','Couscous Cha-Cha','1·2·cha-cha-cha · 28 DT'],['ojja','Ojja Mambo','Tempo vif · 22 DT'],['ma9rouna','Ma9rouna Rueda','En cercle · 24 DT'],['menu_a','La carte','4 plats · 4 danses'],['assiettes','Arts de la table','Terre cuite & zellige'],['neon','Le néon','La danseuse en lumière'],['serveur','Le tablier','Le rouge en mouvement'],['interieur','La table','Ambiance du soir']];
+  const c=document.createElement('div');c.className='car';
+  c.innerHTML='<div class="k">Temps 7 · La table</div><h2>Chaque plat a sa danse.</h2><p>Un plat tunisien, un pas de danse. Passe sur une carte pour la voir de plus près.</p>';
+  const t=document.createElement('div');t.className='track';
+  const html=d.map(([f,n,x])=>`<div class="card"><div class="ph"><img src="d_${f}.jpg" alt="${n}" loading="lazy"></div><b>${n}</b><i>${x}</i></div>`).join('');
+  t.innerHTML=html+html;c.appendChild(t);
+  t.addEventListener('click',e=>{const k=e.target.closest('.card');t.querySelectorAll('.card').forEach(x=>x!==k&&x.classList.remove('tap'));k&&k.classList.toggle('tap');t.style.animationPlayState=k&&k.classList.contains('tap')?'paused':''});
+  return c}
 /* build pages */
 const main=document.getElementById('pages');const frames=[];
 beats.forEach(([a,b],i)=>{const s=document.createElement('section');s.id='t'+(i+1);s.dataset.i=i;
-  for(let n=a;n<=b;n++){const f=document.createElement('div');f.className='fr';
+  for(let n=a;n<=b;n++){if(n===17){s.appendChild(buildCar());continue}const f=document.createElement('div');f.className='fr';
     if(n>1&&!RM){f.classList.add('anim');if(n%3===1)f.classList.add('l');else if(n%3===2)f.classList.add('r')}
     const im=new Image();im.src='p'+String(n).padStart(2,'0')+'.jpg';im.alt=alts[n];if(n>2)im.loading='lazy';
     f.appendChild(im);s.appendChild(f);frames.push(f)}
