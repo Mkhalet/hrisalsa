@@ -85,9 +85,11 @@ section{scroll-margin-top:64px}
 .car h2{font-family:Marcellus;font-weight:400;font-size:clamp(34px,5vw,84px);line-height:1;padding:0 5vw}
 .car .k{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.25em;text-transform:uppercase;color:var(--saf);padding:0 5vw;margin-bottom:18px}
 .car p{padding:0 5vw;margin-top:16px;opacity:.75;max-width:640px;line-height:1.6}
-.track{display:flex;gap:28px;width:max-content;padding:70px 0 40px;animation:marq 40s linear infinite}
-.car:hover .track{animation-play-state:paused}
-@keyframes marq{to{transform:translateX(-50%)}}
+.vp{position:relative}
+.track{display:flex;gap:28px;width:max-content;padding:70px 0 40px;will-change:transform}
+.arr{position:absolute;top:50%;z-index:5;width:58px;height:58px;border-radius:50%;border:1.5px solid var(--cream);background:rgba(42,23,20,.55);backdrop-filter:blur(6px);color:var(--cream);font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transform:translateY(-50%);transition:background .3s,transform .3s var(--out)}
+.arr:hover{background:var(--red);transform:translateY(-50%) scale(1.1)}
+.arr.prev{left:2.5vw}.arr.next{right:2.5vw}
 .card{width:clamp(220px,22vw,340px);flex:none;transition:transform .5s var(--out),opacity .4s;cursor:pointer}
 .card .ph{aspect-ratio:4/5;border-radius:20px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
 .card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--out)}
@@ -172,20 +174,32 @@ function walkFrame(){if(!walk)return;const r=walk.getBoundingClientRect(),vh=inn
   walk.querySelector('.hint').style.opacity=p<.05?.8:0}
 addEventListener('scroll',walkFrame,{passive:true});addEventListener('resize',walkFrame);
 /* dishes carousel */
-function buildCar(){const d=[['couscous','Couscous Cha-Cha','1·2·cha-cha-cha · 28 DT'],['ojja','Ojja Mambo','Tempo vif · 22 DT'],['ma9rouna','Ma9rouna Rueda','En cercle · 24 DT'],['menu_a','La carte','4 plats · 4 danses'],['assiettes','Arts de la table','Terre cuite & zellige'],['neon','Le néon','La danseuse en lumière'],['serveur','Le tablier','Le rouge en mouvement'],['interieur','La table','Ambiance du soir']];
+function buildCar(){const d=[['couscous','Couscous Cha-Cha','1·2·cha-cha-cha · 28 DT'],['ojja','Ojja Mambo','Tempo vif · 22 DT'],['ma9rouna','Ma9rouna Rueda','En cercle · 24 DT']];
   const c=document.createElement('div');c.className='car';
-  c.innerHTML='<div class="k">Temps 7 · La table</div><h2>Chaque plat a sa danse.</h2><p>Un plat tunisien, un pas de danse. Passe sur une carte pour la voir de plus près.</p>';
-  const t=document.createElement('div');t.className='track';
-  const html=d.map(([f,n,x])=>`<div class="card"><div class="ph"><img src="d_${f}.jpg" alt="${n}" loading="lazy"></div><b>${n}</b><i>${x}</i></div>`).join('');
-  t.innerHTML=html+html;c.appendChild(t);
-  t.addEventListener('click',e=>{const k=e.target.closest('.card');t.querySelectorAll('.card').forEach(x=>x!==k&&x.classList.remove('tap'));k&&k.classList.toggle('tap');t.style.animationPlayState=k&&k.classList.contains('tap')?'paused':''});
+  c.innerHTML='<div class="k">Temps 7 · La table</div><h2>Chaque plat a sa danse.</h2><p>Un plat tunisien, un pas de danse. Passe sur une carte pour la voir de plus près.</p><div class="vp"><button class="arr prev" aria-label="Précédent">←</button><div class="track"></div><button class="arr next" aria-label="Suivant">→</button></div>';
+  const t=c.querySelector('.track');const one=d.map(([f,n,x])=>`<div class="card"><div class="ph"><img src="d_${f}.jpg" alt="${n}" loading="lazy"></div><b>${n}</b><i>${x}</i></div>`).join('');
+  t.innerHTML=one.repeat(6);
+  let x=0,target=null,hover=false,setW=0;
+  const measure=()=>{const cs=t.children;setW=cs[d.length].offsetLeft-cs[0].offsetLeft};
+  const step=()=>t.children[1].offsetLeft-t.children[0].offsetLeft;
+  const wrap=()=>{if(!setW)measure();while(x<=-2*setW)x+=setW;while(x>-setW)x-=setW};
+  function tick(){if(!setW)measure();
+    if(target!==null){x+=(target-x)*.12;if(Math.abs(target-x)<.5){x=target;target=null;wrap()}}
+    else if(!hover&&!RM){x-=.6;wrap()}
+    t.style.transform=`translateX(${x}px)`;requestAnimationFrame(tick)}
+  t.addEventListener('mouseenter',()=>hover=true);t.addEventListener('mouseleave',()=>{hover=false;t.querySelectorAll('.card.tap').forEach(k=>k.classList.remove('tap'))});
+  c.querySelector('.prev').onclick=()=>{wrap();target=(target??x)+step()};
+  c.querySelector('.next').onclick=()=>{wrap();target=(target??x)-step()};
+  t.addEventListener('click',e=>{const k=e.target.closest('.card');t.querySelectorAll('.card').forEach(z=>z!==k&&z.classList.remove('tap'));if(k){k.classList.toggle('tap');hover=k.classList.contains('tap')}});
+  addEventListener('resize',()=>{setW=0});
+  requestAnimationFrame(()=>{measure();x=-setW;tick()});
   return c}
 /* build pages */
 const main=document.getElementById('pages');const frames=[];
 beats.forEach(([a,b],i)=>{const s=document.createElement('section');s.id='t'+(i+1);s.dataset.i=i;
   for(let n=a;n<=b;n++){if(n===17){s.appendChild(buildCar());continue}if(n===13){s.appendChild(buildWalk());continue}if(n===14)continue;const f=document.createElement('div');f.className='fr';
     if(n>1&&!RM){f.classList.add('anim');if(n%3===1)f.classList.add('l');else if(n%3===2)f.classList.add('r')}
-    const im=new Image();im.src='p'+String(n).padStart(2,'0')+'.jpg';im.alt=alts[n];if(n>2)im.loading='lazy';
+    const im=new Image();im.src='p'+String(n).padStart(2,'0')+'.jpg?v=4';im.alt=alts[n];if(n>2)im.loading='lazy';
     f.appendChild(im);s.appendChild(f);frames.push(f)}
   main.appendChild(s)});
 
