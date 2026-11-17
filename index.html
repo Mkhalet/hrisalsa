@@ -133,7 +133,7 @@ footer p{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.14em;tex
 .btn.b{border:1.5px solid var(--cream);color:var(--cream)}
 @media(max-width:700px){:root{--nav:42px}nav{gap:8px;padding:0 10px}nav .brand{font-size:15px}nav .brand img{width:20px;height:20px}nav a.beat span{display:none}nav a.beat{padding:4px}nav a.beat b{width:18px;height:18px;font-size:10px}#big{font-size:38px;height:38px}
   main{padding:1vh 4px 0}.fr,.car,.walk{margin-bottom:2vh}.walk{height:230vh}.stage{height:auto;aspect-ratio:16/9;top:calc(50vh - 28vw)}.stage .cap{font-size:20px;left:4%;bottom:7%}.stage .cap small{font-size:9px;margin-bottom:6px}.stage .hint{font-size:8px}.fr,.car,.stage{border-radius:8px}.fr.anim.in,.fr.anim.l.in,.fr.anim.r.in{clip-path:inset(0 round 8px)}#flash div{font-size:18px;padding:10px 16px}}
-@media(max-height:520px) and (orientation:landscape){:root{--nav:34px}nav a.beat span{display:none}nav a.beat{padding:3px}nav a.beat b{width:18px;height:18px;font-size:10px}nav .brand{font-size:14px}#big{display:none}
+@media(max-height:520px) and (orientation:landscape) and (pointer:coarse){:root{--nav:34px}nav a.beat span{display:none}nav a.beat{padding:3px}nav a.beat b{width:18px;height:18px;font-size:10px}nav .brand{font-size:14px}#big{display:none}
   main{padding:0 2px}.fr,.car,.walk{margin-bottom:1.5vh}.fr,.car,.stage{border-radius:6px}#flash{bottom:10px;left:10px}#flash div{font-size:16px;padding:8px 14px}}
 @media(prefers-reduced-motion:reduce){#intro{display:none}.fr.anim,.fr.anim img{clip-path:none!important;transform:none!important}#flash,.drop{display:none}}
 </style>
@@ -175,7 +175,7 @@ footer p{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.14em;tex
 
 <script>
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const SMALL=matchMedia('(max-width:700px), (max-height:520px)').matches;
+const SMALL=matchMedia('(max-width:700px), (pointer:coarse)').matches;
 const beats=[[1,4],[5,5],[6,8],[9,9],[10,12],[13,15],[16,19],[20,22]];
 const names=["L'étincelle","L'univers","Le geste","Pause","Le langage","Le lieu","La table","Hors les murs"];
 const alts={1:"Couverture Hrisalsa",2:"Prologue : salsa, la sauce et la danse",3:"Le nom : Hrissa + Salsa",4:"Le brief et les valeurs",5:"Moodboard",6:"Croquis du logo",7:"L'emblème, le piment qui danse",8:"Déclinaisons du logo",9:"Pause",10:"Couleurs",11:"Typographie",12:"Motifs",13:"La façade",14:"La salle",15:"La table et le néon",16:"Les assiettes",17:"Les plats",18:"Le menu",19:"La tenue du serveur",20:"Instagram",21:"Emballages à emporter",22:"Fin"};
